@@ -8,12 +8,16 @@
 # rsource — Source the current workspace install/setup.zsh
 # Usage: rsource [path]
 #   If no path given, searches upward for install/setup.zsh
+#   Limited to 10 directory levels deep
+#   Verifies file ownership before sourcing
 # ---------------------------------------------------------------------------
 rsource() {
   local target="${1:-}"
   if [[ -z "$target" ]]; then
     local dir="$PWD"
-    while [[ "$dir" != "/" ]]; do
+    local depth=0
+    local max_depth=10
+    while [[ "$dir" != "/" ]] && [[ $depth -lt $max_depth ]]; do
       if [[ -f "$dir/install/setup.zsh" ]]; then
         target="$dir/install/setup.zsh"
         break
@@ -22,7 +26,13 @@ rsource() {
         break
       fi
       dir="${dir:h}"
+      ((depth++))
     done
+
+    if [[ $depth -ge $max_depth ]]; then
+      echo "[ros2] Search depth limit ($max_depth) reached. Use 'rsource <path>' to specify directly." >&2
+      return 1
+    fi
   fi
 
   if [[ -z "$target" ]]; then
@@ -33,6 +43,19 @@ rsource() {
   if [[ ! -f "$target" ]]; then
     echo "[ros2] File not found: $target" >&2
     return 1
+  fi
+
+  # Verify file is owned by current user (security check)
+  if command -v stat >/dev/null 2>&1; then
+    local file_owner
+    file_owner=$(stat -c %u "$target" 2>/dev/null)
+    local current_uid
+    current_uid=$(id -u)
+    if [[ -n "$file_owner" ]] && [[ "$file_owner" != "$current_uid" ]]; then
+      echo "[ros2] Security warning: $target is not owned by you (owner UID: $file_owner, your UID: $current_uid)" >&2
+      echo "[ros2] Use 'rsource $target' again to force, or investigate the file." >&2
+      return 1
+    fi
   fi
 
   echo "[ros2] Sourcing $target ..."
