@@ -10,9 +10,9 @@ local plugin_dir="${0:A:h:h}"
 local fail=0
 
 ZSH="/tmp/fake-omz"
-source "$plugin_dir/ros2-shortcuts.plugin.zsh"
+source "$plugin_dir/ros2.plugin.zsh"
 
-echo "=== ros2-shortcuts function existence test ==="
+echo "=== ros2 function existence test ==="
 
 # Helper
 _check_function() {

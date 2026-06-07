@@ -3,7 +3,7 @@
 # =============================================================================
 # aliases/lifecycle.zsh — ros2 lifecycle shortcuts
 # Prefix: rlc (ros2 lifecycle)
-# Off by default (ROS2SC_ENABLE_LIFECYCLE=0)
+# Off by default (ROS2_ENABLE_LIFECYCLE=0)
 # =============================================================================
 
 alias rlcl='ros2 lifecycle list'               # List lifecycle nodes

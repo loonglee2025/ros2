@@ -22,5 +22,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI workflow with GitHub Actions
 - Comprehensive test suite
 
-[Unreleased]: https://github.com/loonglee2025/ros2-shortcuts/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/loonglee2025/ros2-shortcuts/releases/tag/v0.1.0
+[Unreleased]: https://github.com/loonglee2025/ros2/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/loonglee2025/ros2/releases/tag/v0.1.0

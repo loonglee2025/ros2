@@ -1,6 +1,6 @@
-# ros2-shortcuts
+# ros2
 
-[![CI](https://github.com/loonglee2025/ros2-shortcuts/actions/workflows/ci.yml/badge.svg)](https://github.com/loonglee2025/ros2-shortcuts/actions/workflows/ci.yml)
+[![CI](https://github.com/loonglee2025/ros2/actions/workflows/ci.yml/badge.svg)](https://github.com/loonglee2025/ros2/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![ROS2](https://img.shields.io/badge/ROS2-Humble%20|%20Jazzy%20|%20Rolling-blue)](https://docs.ros.org/)
 
@@ -11,7 +11,7 @@
 - **模块化加载**：按 topic/service/node/bag/colcon 等子系统按需启用
 - **安全默认**：不启用任何破坏性别名（如自动删除 bag、kill 全部节点）
 - **Function 增强**：带参数的智能命令（自动 source 工作区、bag 录制、带 `--ros-args` 的运行）
-- **环境变量开关**：通过 `ROS2SC_ENABLE_*` 控制各模块，零配置即可用
+- **环境变量开关**：通过 `ROS2_ENABLE_*` 控制各模块，零配置即可用
 - **完整测试**：CI 覆盖语法检查、加载测试、别名展开验证
 
 ## 安装方式
@@ -19,28 +19,28 @@
 ### Oh My Zsh（推荐）
 
 ```bash
-git clone https://github.com/loonglee2025/ros2-shortcuts.git \
-  ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/ros2-shortcuts
+git clone https://github.com/loonglee2025/ros2.git \
+  ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/ros2
 ```
 
 在 `~/.zshrc` 中启用：
 
 ```zsh
-plugins=(... ros2-shortcuts)
+plugins=(... ros2)
 ```
 
 ### 手动安装
 
 ```bash
-git clone https://github.com/loonglee2025/ros2-shortcuts.git ~/.ros2-shortcuts
-echo "source ~/.ros2-shortcuts/ros2-shortcuts.plugin.zsh" >> ~/.zshrc
+git clone https://github.com/loonglee2025/ros2.git ~/.ros2
+echo "source ~/.ros2/ros2.plugin.zsh" >> ~/.zshrc
 ```
 
 ## 目录说明
 
 ```
-ros2-shortcuts/
-├── ros2-shortcuts.plugin.zsh   # 主入口：加载函数、别名、补全
+ros2/
+├── ros2.plugin.zsh   # 主入口：加载函数、别名、补全
 ├── aliases/                     # 别名模块（按子系统拆分）
 │   ├── topic.zsh               # rt* 前缀
 │   ├── service.zsh             # rs* 前缀
@@ -141,7 +141,7 @@ ros2-shortcuts/
 ```bash
 # 自动向上查找 install/setup.zsh
 $ rsource
-[ros2-shortcuts] Sourcing /home/user/ws/install/setup.zsh ...
+[ros2] Sourcing /home/user/ws/install/setup.zsh ...
 
 # 指定路径
 $ rsource /opt/ros/humble/setup.zsh
@@ -152,7 +152,7 @@ $ rsource /opt/ros/humble/setup.zsh
 ```bash
 # 自动向上查找 src/ 或 install/ 目录
 $ rcd
-[ros2-shortcuts] Entered workspace: /home/user/ros2_ws
+[ros2] Entered workspace: /home/user/ros2_ws
 
 # 指定名称（搜索 ~/ 或绝对路径）
 $ rcd my_ws
@@ -173,7 +173,7 @@ $ rbuild my_package another_pkg
 ```bash
 # 自动识别 key:=value 并添加 --ros-args -p
 $ rrun my_pkg my_node rate:=10.0 debug:=true
-[ros2-shortcuts] ros2 run my_pkg my_node --ros-args -p rate:=10.0 -p debug:=true
+[ros2] ros2 run my_pkg my_node --ros-args -p rate:=10.0 -p debug:=true
 ```
 
 ### rbag — 安全录制
@@ -201,7 +201,7 @@ $ rbagplay ~/ros2_bags/bag_20260101_120000 0.5 --loop
 ```bash
 # 按名称模式匹配，确认后才 kill
 $ rkill teleop
-[ros2-shortcuts] Matched nodes:
+[ros2] Matched nodes:
   /teleop_twist_keyboard
 Kill these nodes? [y/N] y
 ```
@@ -212,25 +212,25 @@ Kill these nodes? [y/N] y
 
 ```zsh
 # 禁用 bag 和 lifecycle 别名
-export ROS2SC_ENABLE_BAG=0
-export ROS2SC_ENABLE_LIFECYCLE=0
+export ROS2_ENABLE_BAG=0
+export ROS2_ENABLE_LIFECYCLE=0
 
-plugins=(git ros2-shortcuts)
+plugins=(git ros2)
 ```
 
 ### 可用开关
 
 | 变量 | 默认 | 说明 |
 |:---|:---|:---|
-| `ROS2SC_ENABLE_CORE` | `1` | topic/service/node/param/action |
-| `ROS2SC_ENABLE_PKG` | `1` | pkg/interface |
-| `ROS2SC_ENABLE_RUN` | `1` | run/launch |
-| `ROS2SC_ENABLE_BAG` | `1` | bag（只读别名） |
-| `ROS2SC_ENABLE_COLCON` | `1` | colcon |
-| `ROS2SC_ENABLE_ENV` | `1` | workspace 函数 |
-| `ROS2SC_ENABLE_UTILS` | `1` | doctor 等 |
-| `ROS2SC_ENABLE_LIFECYCLE` | `0` | lifecycle（较少用） |
-| `ROS2SC_ENABLE_DAEMON` | `0` | daemon（较少用） |
+| `ROS2_ENABLE_CORE` | `1` | topic/service/node/param/action |
+| `ROS2_ENABLE_PKG` | `1` | pkg/interface |
+| `ROS2_ENABLE_RUN` | `1` | run/launch |
+| `ROS2_ENABLE_BAG` | `1` | bag（只读别名） |
+| `ROS2_ENABLE_COLCON` | `1` | colcon |
+| `ROS2_ENABLE_ENV` | `1` | workspace 函数 |
+| `ROS2_ENABLE_UTILS` | `1` | doctor 等 |
+| `ROS2_ENABLE_LIFECYCLE` | `0` | lifecycle（较少用） |
+| `ROS2_ENABLE_DAEMON` | `0` | daemon（较少用） |
 
 ## 别名命名规范
 

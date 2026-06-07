@@ -9,11 +9,11 @@ set -e
 local fail=0
 local plugin_dir="${0:A:h:h}"
 
-echo "=== ros2-shortcuts load test ==="
+echo "=== ros2 load test ==="
 
 # 1. Syntax check main file
-echo -n "[TEST] Syntax check ros2-shortcuts.plugin.zsh ... "
-if zsh -n "$plugin_dir/ros2-shortcuts.plugin.zsh"; then
+echo -n "[TEST] Syntax check ros2.plugin.zsh ... "
+if zsh -n "$plugin_dir/ros2.plugin.zsh"; then
   echo "PASS"
 else
   echo "FAIL"
@@ -24,7 +24,7 @@ fi
 echo -n "[TEST] Source plugin without OMZ ... "
 if (
   ZSH="/tmp/fake-omz"
-  source "$plugin_dir/ros2-shortcuts.plugin.zsh"
+  source "$plugin_dir/ros2.plugin.zsh"
 ); then
   echo "PASS"
 else

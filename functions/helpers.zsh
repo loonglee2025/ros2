@@ -20,12 +20,12 @@ rte() {
   if [[ -z "$msg_type" ]]; then
     msg_type=$(ros2 topic type "$topic" 2>/dev/null)
     if [[ -z "$msg_type" ]]; then
-      echo "[ros2-shortcuts] Could not determine type for topic: $topic" >&2
+      echo "[ros2] Could not determine type for topic: $topic" >&2
       return 1
     fi
   fi
 
-  echo "[ros2-shortcuts] ros2 topic echo $topic $msg_type"
+  echo "[ros2] ros2 topic echo $topic $msg_type"
   ros2 topic echo "$topic" "$msg_type"
 }
 
@@ -75,10 +75,10 @@ rrun() {
   done
 
   if [[ ${#ros_args} -gt 0 ]]; then
-    echo "[ros2-shortcuts] ros2 run $pkg $exe --ros-args ${ros_args[*]} ${other_args[*]}"
+    echo "[ros2] ros2 run $pkg $exe --ros-args ${ros_args[*]} ${other_args[*]}"
     ros2 run "$pkg" "$exe" --ros-args "${ros_args[@]}" "${other_args[@]}"
   else
-    echo "[ros2-shortcuts] ros2 run $pkg $exe ${other_args[*]}"
+    echo "[ros2] ros2 run $pkg $exe ${other_args[*]}"
     ros2 run "$pkg" "$exe" "${other_args[@]}"
   fi
 }
@@ -120,8 +120,8 @@ rbag() {
     out="$bag_dir/bag_$(date +%Y%m%d_%H%M%S)"
   fi
 
-  echo "[ros2-shortcuts] Recording to: $out"
-  echo "[ros2-shortcuts] Topics: ${topics[*]}"
+  echo "[ros2] Recording to: $out"
+  echo "[ros2] Topics: ${topics[*]}"
   ros2 bag record -o "$out" "${topics[@]}"
 }
 
@@ -149,7 +149,7 @@ rbagplay() {
     fi
   done
 
-  echo "[ros2-shortcuts] ros2 bag play $rate $loop $bag"
+  echo "[ros2] ros2 bag play $rate $loop $bag"
   ros2 bag play $rate $loop "$bag"
 }
 
@@ -167,11 +167,11 @@ rkill() {
   local nodes
   nodes=$(ros2 node list 2>/dev/null | grep "$pattern")
   if [[ -z "$nodes" ]]; then
-    echo "[ros2-shortcuts] No nodes matched pattern: $pattern" >&2
+    echo "[ros2] No nodes matched pattern: $pattern" >&2
     return 1
   fi
 
-  echo "[ros2-shortcuts] Matched nodes:"
+  echo "[ros2] Matched nodes:"
   echo "$nodes"
   echo -n "Kill these nodes? [y/N] "
   read -r confirm
@@ -180,11 +180,11 @@ rkill() {
       local pid
       pid=$(pgrep -f "$node" | head -n1)
       if [[ -n "$pid" ]]; then
-        echo "[ros2-shortcuts] Killing $node (PID $pid)"
+        echo "[ros2] Killing $node (PID $pid)"
         kill "$pid"
       fi
     done
   else
-    echo "[ros2-shortcuts] Cancelled."
+    echo "[ros2] Cancelled."
   fi
 }

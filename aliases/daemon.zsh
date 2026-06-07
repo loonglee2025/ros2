@@ -3,7 +3,7 @@
 # =============================================================================
 # aliases/daemon.zsh — ros2 daemon shortcuts
 # Prefix: rd (ros2 daemon)
-# Off by default (ROS2SC_ENABLE_DAEMON=0)
+# Off by default (ROS2_ENABLE_DAEMON=0)
 # =============================================================================
 
 alias rdstart='ros2 daemon start'              # Start ROS2 daemon

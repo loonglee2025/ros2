@@ -26,16 +26,16 @@ rsource() {
   fi
 
   if [[ -z "$target" ]]; then
-    echo "[ros2-shortcuts] No install/setup.zsh found in current or parent directories." >&2
+    echo "[ros2] No install/setup.zsh found in current or parent directories." >&2
     return 1
   fi
 
   if [[ ! -f "$target" ]]; then
-    echo "[ros2-shortcuts] File not found: $target" >&2
+    echo "[ros2] File not found: $target" >&2
     return 1
   fi
 
-  echo "[ros2-shortcuts] Sourcing $target ..."
+  echo "[ros2] Sourcing $target ..."
   source "$target"
 }
 
@@ -56,7 +56,7 @@ rcd() {
       cd "$HOME/$hint"
       return 0
     fi
-    echo "[ros2-shortcuts] Directory not found: $hint" >&2
+    echo "[ros2] Directory not found: $hint" >&2
     return 1
   fi
 
@@ -64,13 +64,13 @@ rcd() {
   while [[ "$dir" != "/" ]]; do
     if [[ -d "$dir/src" ]] || [[ -d "$dir/install" ]] || [[ -f "$dir/.colcon" ]]; then
       cd "$dir"
-      echo "[ros2-shortcuts] Entered workspace: $dir"
+      echo "[ros2] Entered workspace: $dir"
       return 0
     fi
     dir="${dir:h}"
   done
 
-  echo "[ros2-shortcuts] No ROS2 workspace marker found (src/, install/, .colcon)." >&2
+  echo "[ros2] No ROS2 workspace marker found (src/, install/, .colcon)." >&2
   return 1
 }
 
@@ -82,10 +82,10 @@ rcd() {
 # ---------------------------------------------------------------------------
 rbuild() {
   if [[ $# -eq 0 ]]; then
-    echo "[ros2-shortcuts] colcon build --symlink-install"
+    echo "[ros2] colcon build --symlink-install"
     colcon build --symlink-install
   else
-    echo "[ros2-shortcuts] colcon build --symlink-install --packages-up-to $*"
+    echo "[ros2] colcon build --symlink-install --packages-up-to $*"
     colcon build --symlink-install --packages-up-to "$@"
   fi
 }

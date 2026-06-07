@@ -11,9 +11,9 @@ local fail=0
 
 # Source plugin in a controlled way
 ZSH="/tmp/fake-omz"
-source "$plugin_dir/ros2-shortcuts.plugin.zsh"
+source "$plugin_dir/ros2.plugin.zsh"
 
-echo "=== ros2-shortcuts alias expansion test ==="
+echo "=== ros2 alias expansion test ==="
 
 # Helper
 _check_alias() {
