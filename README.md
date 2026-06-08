@@ -6,6 +6,8 @@
 
 > 为 ROS 2 开发者打造的 Oh My Zsh 插件，用 2-4 个字符的短别名替代冗长的 `ros2 topic list` 命令。
 
+[简体中文](README.md) | [English](README.en.md)
+
 ## 功能亮点
 
 - **模块化加载**：按 topic/service/node/bag/colcon 等子系统按需启用
