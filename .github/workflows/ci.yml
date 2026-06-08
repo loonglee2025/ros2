@@ -17,7 +17,7 @@ jobs:
 
       - name: Syntax check
         run: |
-          zsh -n ros2-shortcuts.plugin.zsh
+          zsh -n ros2.plugin.zsh
           for f in aliases/*.zsh functions/*.zsh tests/*.zsh; do
             echo "Checking $f"
             zsh -n "$f"
