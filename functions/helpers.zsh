@@ -3,6 +3,11 @@
 # =============================================================================
 # functions/helpers.zsh — helper functions for common ROS2 operations
 # =============================================================================
+# Foxy compatibility notes:
+#   - r2echo, r2hz, rrun, rbag, rbagplay, rkill all work on Foxy
+#   - rrun uses --ros-args -p which is valid on Foxy
+#   - rbag uses ros2 bag record which exists on Foxy
+# =============================================================================
 
 # ---------------------------------------------------------------------------
 # r2echo — Smart ros2 topic echo with optional type

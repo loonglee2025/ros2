@@ -39,6 +39,50 @@ local _ROS2_DIR="${0:A:h}"
 : ${ROS2_ENABLE_UTILS:=1}     # misc helpers (doctor, etc.)
 
 # ---------------------------------------------------------------------------
+# 2.5 Foxy compatibility layer
+#    ROS 2 Foxy (LTS, EOL June 2023) lacks some CLI verbs present in
+#    Humble/Jazzy/Rolling.  When ROS2_DISTRO=foxy is detected (or the
+#    user explicitly exports it), aliases that depend on missing verbs
+#    are automatically disabled and safe fallbacks are loaded instead.
+# ---------------------------------------------------------------------------
+: ${ROS2_DISTRO:=""}
+
+# Auto-detect distro if not set
+if [[ -z "$ROS2_DISTRO" ]] && [[ -n "$ROS_DISTRO" ]]; then
+  ROS2_DISTRO="$ROS_DISTRO"
+fi
+
+# Normalise to lower-case
+ROS2_DISTRO="${ROS2_DISTRO:l}"
+
+# Foxy feature-guard helper
+_ros2_foxy_guard() {
+  local verb="$1"
+  if [[ "$ROS2_DISTRO" == "foxy" ]]; then
+    return 1
+  fi
+  return 0
+}
+
+# Foxy-safe alias wrapper: skips the alias on Foxy if the verb is missing
+_ros2_foxy_alias() {
+  local name="$1"
+  local cmd="$2"
+  local verb="${3:-}"
+
+  if [[ -n "$verb" ]] && [[ "$ROS2_DISTRO" == "foxy" ]]; then
+    # Verb explicitly known to be missing on Foxy
+    return 0
+  fi
+
+  if alias "$name" >/dev/null 2>&1; then
+    echo "[ros2] Warning: alias '$name' already defined, skipping" >&2
+  else
+    alias "$name"="$cmd"
+  fi
+}
+
+# ---------------------------------------------------------------------------
 # 3. Helper: safe source wrapper with conflict detection
 # ---------------------------------------------------------------------------
 _ros2_source() {
@@ -94,6 +138,9 @@ _ros2_alias() {
 [[ "$ROS2_ENABLE_COLCON"    == "1" ]] && _ros2_source "$_ROS2_DIR/aliases/colcon.zsh"
 [[ "$ROS2_ENABLE_UTILS"     == "1" ]] && _ros2_source "$_ROS2_DIR/aliases/utils.zsh"
 
+# Foxy compatibility aliases (loaded only when ROS2_DISTRO=foxy)
+_ros2_source "$_ROS2_DIR/aliases/foxy-compat.zsh"
+
 # ---------------------------------------------------------------------------
 # 6. Load completions if available
 # ---------------------------------------------------------------------------
@@ -102,6 +149,6 @@ _ros2_alias() {
 # ---------------------------------------------------------------------------
 # 7. Cleanup
 # ---------------------------------------------------------------------------
-unset -f _ros2_source _ros2_alias
+unset -f _ros2_source _ros2_alias _ros2_foxy_guard _ros2_foxy_alias
 
 # vim: set ft=zsh:

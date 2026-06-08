@@ -4,6 +4,8 @@
 # aliases/service.zsh — ros2 service shortcuts
 # Prefix: rs (ros2 service)
 # =============================================================================
+# Foxy compatibility: all core service verbs exist in Foxy.
+# =============================================================================
 
 alias rsl='ros2 service list'                  # List all services
 alias rslt='ros2 service list -t'              # List services with types

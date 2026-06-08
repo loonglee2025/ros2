@@ -15,6 +15,31 @@
 - **Smart Functions**: Parameter-aware commands (auto-source workspace, bag recording, run with `--ros-args`).
 - **Environment Switches**: Control each module via `ROS2_ENABLE_*` variables — zero configuration required.
 - **Full Test Coverage**: CI covers syntax checks, load tests, and alias expansion validation.
+- **Multi-Distro Support**: Auto-adapts to ROS 2 Foxy / Humble / Jazzy / Rolling (see below).
+
+## ROS 2 Distribution Compatibility
+
+This plugin automatically detects the `ROS_DISTRO` environment variable and adapts CLI syntax accordingly:
+
+| Feature | Foxy | Humble+ |
+|:---|:---|:---|
+| `ros2 topic bw` | ❌ Not available | ✅ `rtbw` |
+| `ros2 topic delay` | ❌ Not available | ✅ `rtd` |
+| `ros2 action call` | ❌ Uses `send_goal` | ✅ `rac` |
+| `ros2 interface packages` | ❌ Not available | ✅ `rifp` |
+| `ros2 interface package` | ❌ Not available | ✅ `rifpp` |
+| `ros2 interface proto` | ❌ Not available | ✅ `rifproto` |
+| `ros2 run --list` | ❌ Not available | ✅ `rrl` |
+| `ros2 doctor --report` | ❌ May not support | ✅ `rdoce` |
+
+**Manually specify distribution:**
+```zsh
+# In ~/.zshrc, BEFORE the plugins declaration
+export ROS2_DISTRO=foxy   # Force Foxy compatibility mode
+plugins=(... ros2)
+```
+
+If unset, the plugin automatically reads the `ROS_DISTRO` environment variable.
 
 ## Installation
 
@@ -57,7 +82,8 @@ ros2/
 │   ├── lifecycle.zsh        # rlc* prefix (disabled by default)
 │   ├── daemon.zsh           # rd* prefix (disabled by default)
 │   ├── colcon.zsh           # cb* prefix
-│   └── utils.zsh            # ru* prefix
+│   ├── utils.zsh            # ru* prefix
+│   └── foxy-compat.zsh      # Foxy compatibility fallbacks
 ├── functions/               # Function modules
 │   ├── workspace.zsh        # rsource, rcd, rbuild
 │   └── helpers.zsh          # rte, rthz, rrun, rbag, rbagplay, rkill

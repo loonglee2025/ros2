@@ -5,6 +5,8 @@
 # Prefix: rb (ros2 bag)
 # WARNING: These are safe read-only by default. Record commands require explicit args.
 # =============================================================================
+# Foxy compatibility: all bag verbs exist in Foxy.
+# =============================================================================
 
 alias rbi='ros2 bag info'                      # Show bag info (needs arg)
 alias rbp='ros2 bag play'                      # Play a bag (needs arg)

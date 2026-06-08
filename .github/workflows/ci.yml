@@ -31,3 +31,10 @@ jobs:
 
       - name: Function existence test
         run: zsh tests/test_functions.zsh
+
+      - name: Foxy compatibility test
+        run: |
+          echo "Testing Foxy mode..."
+          ROS2_DISTRO=foxy zsh tests/test_foxy_compat.zsh
+          echo "Testing Humble mode..."
+          ROS2_DISTRO=humble zsh tests/test_foxy_compat.zsh

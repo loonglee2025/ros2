@@ -15,6 +15,31 @@
 - **Function 增强**：带参数的智能命令（自动 source 工作区、bag 录制、带 `--ros-args` 的运行）
 - **环境变量开关**：通过 `ROS2_ENABLE_*` 控制各模块，零配置即可用
 - **完整测试**：CI 覆盖语法检查、加载测试、别名展开验证
+- **多版本兼容**：自动适配 ROS 2 Foxy / Humble / Jazzy / Rolling（见下方说明）
+
+## ROS 2 发行版兼容性
+
+本插件会自动检测 `ROS_DISTRO` 环境变量并适配对应的 CLI 语法：
+
+| 功能 | Foxy | Humble+ |
+|:---|:---|:---|
+| `ros2 topic bw` | ❌ 不存在 | ✅ `rtbw` |
+| `ros2 topic delay` | ❌ 不存在 | ✅ `rtd` |
+| `ros2 action call` | ❌ 使用 `send_goal` | ✅ `rac` |
+| `ros2 interface packages` | ❌ 不存在 | ✅ `rifp` |
+| `ros2 interface package` | ❌ 不存在 | ✅ `rifpp` |
+| `ros2 interface proto` | ❌ 不存在 | ✅ `rifproto` |
+| `ros2 run --list` | ❌ 不存在 | ✅ `rrl` |
+| `ros2 doctor --report` | ❌ 可能不支持 | ✅ `rdoce` |
+
+**手动指定发行版：**
+```zsh
+# 在 ~/.zshrc 中，plugins 声明之前设置
+export ROS2_DISTRO=foxy   # 强制使用 Foxy 兼容模式
+plugins=(... ros2)
+```
+
+如果未设置，插件会自动读取 `ROS_DISTRO` 环境变量。
 
 ## 安装方式
 
@@ -57,7 +82,8 @@ ros2/
 │   ├── lifecycle.zsh           # rlc* 前缀（默认关闭）
 │   ├── daemon.zsh              # rd* 前缀（默认关闭）
 │   ├── colcon.zsh              # cb* 前缀
-│   └── utils.zsh               # ru* 前缀
+│   ├── utils.zsh               # ru* 前缀
+│   └── foxy-compat.zsh         # Foxy 兼容回退别名
 ├── functions/                   # 函数模块
 │   ├── workspace.zsh           # rsource, rcd, rbuild
 │   └── helpers.zsh             # rte, rthz, rrun, rbag, rbagplay, rkill
