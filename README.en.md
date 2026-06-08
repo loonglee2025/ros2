@@ -21,16 +21,21 @@
 
 This plugin automatically detects the `ROS_DISTRO` environment variable and adapts CLI syntax accordingly:
 
-| Feature | Foxy | Humble+ |
-|:---|:---|:---|
-| `ros2 topic bw` | ❌ Not available | ✅ `rtbw` |
-| `ros2 topic delay` | ❌ Not available | ✅ `rtd` |
-| `ros2 action call` | ❌ Uses `send_goal` | ✅ `rac` |
-| `ros2 interface packages` | ❌ Not available | ✅ `rifp` |
-| `ros2 interface package` | ❌ Not available | ✅ `rifpp` |
-| `ros2 interface proto` | ❌ Not available | ✅ `rifproto` |
-| `ros2 run --list` | ❌ Not available | ✅ `rrl` |
-| `ros2 doctor --report` | ❌ May not support | ✅ `rdoce` |
+| Feature | Foxy | Humble/Iron | Jazzy+ |
+|:---|:---|:---|:---|
+| `ros2 topic bw` | ❌ Not available | ✅ `rtbw` | ✅ `rtbw` |
+| `ros2 topic delay` | ❌ Not available | ✅ `rtd` | ✅ `rtd` |
+| `ros2 topic info --verbose` | ❌ Not available | ❌ Not available | ✅ `rtiv` |
+| `ros2 action call` | ❌ Uses `send_goal` | ✅ `rac` | ✅ `rac` |
+| `ros2 interface packages` | ❌ Not available | ✅ `rifp` | ✅ `rifp` |
+| `ros2 interface package` | ❌ Not available | ✅ `rifpp` | ✅ `rifpp` |
+| `ros2 interface proto` | ❌ Not available | ✅ `rifproto` | ✅ `rifproto` |
+| `ros2 run --list` | ❌ Not available | ✅ `rrl` | ✅ `rrl` |
+| `ros2 run --log-file-name` | ❌ Not available | ❌ Not available | ✅ `rrln` |
+| `ros2 doctor --report` | ❌ May not support | ✅ `rdoce` | ✅ `rdoce` |
+| `ros2 service echo` | ❌ Not available | ❌ Not available | ✅ `rse` / `rsef` |
+| `ros2 bag record --service` | ❌ Not available | ❌ Not available | ✅ `rbsr` / `rbsa` |
+| `ros2 bag play --publish-service-requests` | ❌ Not available | ❌ Not available | ✅ `rbps` |
 
 **Manually specify distribution:**
 ```zsh
@@ -83,7 +88,8 @@ ros2/
 │   ├── daemon.zsh           # rd* prefix (disabled by default)
 │   ├── colcon.zsh           # cb* prefix
 │   ├── utils.zsh            # ru* prefix
-│   └── foxy-compat.zsh      # Foxy compatibility fallbacks
+│   ├── foxy-compat.zsh      # Foxy compatibility fallbacks
+│   └── jazzy-compat.zsh     # Jazzy+ new feature aliases
 ├── functions/               # Function modules
 │   ├── workspace.zsh        # rsource, rcd, rbuild
 │   └── helpers.zsh          # rte, rthz, rrun, rbag, rbagplay, rkill
@@ -91,7 +97,8 @@ ros2/
 ├── tests/                   # Test suite
 │   ├── test_load.zsh
 │   ├── test_aliases.zsh
-│   └── test_functions.zsh
+│   ├── test_functions.zsh
+│   └── test_foxy_compat.zsh
 ├── examples/                # Usage examples
 ├── .github/workflows/ci.yml # GitHub Actions CI
 ├── CHANGELOG.md

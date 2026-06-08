@@ -36,5 +36,13 @@ jobs:
         run: |
           echo "Testing Foxy mode..."
           ROS2_DISTRO=foxy zsh tests/test_foxy_compat.zsh
+
+      - name: Humble compatibility test
+        run: |
           echo "Testing Humble mode..."
           ROS2_DISTRO=humble zsh tests/test_foxy_compat.zsh
+
+      - name: Jazzy compatibility test
+        run: |
+          echo "Testing Jazzy mode..."
+          ROS2_DISTRO=jazzy zsh tests/test_jazzy_compat.zsh

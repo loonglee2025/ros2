@@ -17,6 +17,11 @@ alias rtt='ros2 topic type'                    # Topic type (needs arg)
 alias rtfind='ros2 topic find'                 # Find topics by type (needs arg)
 alias rtp='ros2 topic pub'                     # Publish to topic (needs arg)
 
+# Jazzy+: topic info --verbose
+if _ros2_distro_at_least "jazzy" 2>/dev/null; then
+  alias rtiv='ros2 topic info --verbose'       # Verbose topic info
+fi
+
 # Foxy: bw and delay are NOT available — guard them
 if [[ "$ROS2_DISTRO" != "foxy" ]]; then
   alias rtbw='ros2 topic bw'                   # Bandwidth (needs arg)

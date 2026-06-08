@@ -39,11 +39,12 @@ local _ROS2_DIR="${0:A:h}"
 : ${ROS2_ENABLE_UTILS:=1}     # misc helpers (doctor, etc.)
 
 # ---------------------------------------------------------------------------
-# 2.5 Foxy compatibility layer
+# 2.5 Distribution compatibility layer
 #    ROS 2 Foxy (LTS, EOL June 2023) lacks some CLI verbs present in
-#    Humble/Jazzy/Rolling.  When ROS2_DISTRO=foxy is detected (or the
-#    user explicitly exports it), aliases that depend on missing verbs
-#    are automatically disabled and safe fallbacks are loaded instead.
+#    Humble/Jazzy/Rolling.  Jazzy adds new verbs not in Foxy/Humble.
+#    When ROS2_DISTRO is detected (or the user explicitly exports it),
+#    aliases that depend on missing verbs are automatically disabled
+#    and safe fallbacks are loaded instead.
 # ---------------------------------------------------------------------------
 : ${ROS2_DISTRO:=""}
 
@@ -55,7 +56,31 @@ fi
 # Normalise to lower-case
 ROS2_DISTRO="${ROS2_DISTRO:l}"
 
-# Foxy feature-guard helper
+# Version comparison helper: returns 0 if current distro >= reference
+# Usage: _ros2_distro_at_least "humble"  → 0 if ROS2_DISTRO is humble/jazzy/rolling
+_ros2_distro_at_least() {
+  local ref="${1:l}"
+  local current="$ROS2_DISTRO"
+  [[ -z "$current" ]] && return 1  # unknown distro → false
+
+  # Ordered list of distros (oldest to newest)
+  local -a distros=(foxy galactic humble iron jazzy rolling)
+  local ref_idx=-1 current_idx=-1
+  local i=1
+  for d in "${distros[@]}"; do
+    [[ "$d" == "$ref" ]] && ref_idx=$i
+    [[ "$d" == "$current" ]] && current_idx=$i
+    ((i++))
+  done
+
+  # If either not found, treat unknown as "newer"
+  [[ $ref_idx -eq -1 ]] && return 0
+  [[ $current_idx -eq -1 ]] && return 0
+
+  [[ $current_idx -ge $ref_idx ]]
+}
+
+# Foxy feature-guard helper (legacy, kept for compatibility)
 _ros2_foxy_guard() {
   local verb="$1"
   if [[ "$ROS2_DISTRO" == "foxy" ]]; then
@@ -141,6 +166,9 @@ _ros2_alias() {
 # Foxy compatibility aliases (loaded only when ROS2_DISTRO=foxy)
 _ros2_source "$_ROS2_DIR/aliases/foxy-compat.zsh"
 
+# Jazzy+ compatibility aliases (loaded only when ROS2_DISTRO >= jazzy)
+_ros2_source "$_ROS2_DIR/aliases/jazzy-compat.zsh"
+
 # ---------------------------------------------------------------------------
 # 6. Load completions if available
 # ---------------------------------------------------------------------------
@@ -149,6 +177,6 @@ _ros2_source "$_ROS2_DIR/aliases/foxy-compat.zsh"
 # ---------------------------------------------------------------------------
 # 7. Cleanup
 # ---------------------------------------------------------------------------
-unset -f _ros2_source _ros2_alias _ros2_foxy_guard _ros2_foxy_alias
+unset -f _ros2_source _ros2_alias _ros2_foxy_guard _ros2_foxy_alias _ros2_distro_at_least
 
 # vim: set ft=zsh:

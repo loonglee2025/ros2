@@ -17,3 +17,8 @@ alias rver='ros2 --version'                    # Show ROS2 CLI version
 if [[ "$ROS2_DISTRO" != "foxy" ]]; then
   alias rdoce='ros2 doctor --report'           # Run ROS2 doctor with report
 fi
+
+# Jazzy+: --log-file-name for ros2 run
+if _ros2_distro_at_least "jazzy" 2>/dev/null; then
+  alias rrln='ros2 run --ros-args --log-file-name'  # Run with custom log file name
+fi

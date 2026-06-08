@@ -21,16 +21,21 @@
 
 本插件会自动检测 `ROS_DISTRO` 环境变量并适配对应的 CLI 语法：
 
-| 功能 | Foxy | Humble+ |
-|:---|:---|:---|
-| `ros2 topic bw` | ❌ 不存在 | ✅ `rtbw` |
-| `ros2 topic delay` | ❌ 不存在 | ✅ `rtd` |
-| `ros2 action call` | ❌ 使用 `send_goal` | ✅ `rac` |
-| `ros2 interface packages` | ❌ 不存在 | ✅ `rifp` |
-| `ros2 interface package` | ❌ 不存在 | ✅ `rifpp` |
-| `ros2 interface proto` | ❌ 不存在 | ✅ `rifproto` |
-| `ros2 run --list` | ❌ 不存在 | ✅ `rrl` |
-| `ros2 doctor --report` | ❌ 可能不支持 | ✅ `rdoce` |
+| 功能 | Foxy | Humble/Iron | Jazzy+ |
+|:---|:---|:---|:---|
+| `ros2 topic bw` | ❌ 不存在 | ✅ `rtbw` | ✅ `rtbw` |
+| `ros2 topic delay` | ❌ 不存在 | ✅ `rtd` | ✅ `rtd` |
+| `ros2 topic info --verbose` | ❌ 不存在 | ❌ 不存在 | ✅ `rtiv` |
+| `ros2 action call` | ❌ 使用 `send_goal` | ✅ `rac` | ✅ `rac` |
+| `ros2 interface packages` | ❌ 不存在 | ✅ `rifp` | ✅ `rifp` |
+| `ros2 interface package` | ❌ 不存在 | ✅ `rifpp` | ✅ `rifpp` |
+| `ros2 interface proto` | ❌ 不存在 | ✅ `rifproto` | ✅ `rifproto` |
+| `ros2 run --list` | ❌ 不存在 | ✅ `rrl` | ✅ `rrl` |
+| `ros2 run --log-file-name` | ❌ 不存在 | ❌ 不存在 | ✅ `rrln` |
+| `ros2 doctor --report` | ❌ 可能不支持 | ✅ `rdoce` | ✅ `rdoce` |
+| `ros2 service echo` | ❌ 不存在 | ❌ 不存在 | ✅ `rse` / `rsef` |
+| `ros2 bag record --service` | ❌ 不存在 | ❌ 不存在 | ✅ `rbsr` / `rbsa` |
+| `ros2 bag play --publish-service-requests` | ❌ 不存在 | ❌ 不存在 | ✅ `rbps` |
 
 **手动指定发行版：**
 ```zsh
@@ -83,7 +88,8 @@ ros2/
 │   ├── daemon.zsh              # rd* 前缀（默认关闭）
 │   ├── colcon.zsh              # cb* 前缀
 │   ├── utils.zsh               # ru* 前缀
-│   └── foxy-compat.zsh         # Foxy 兼容回退别名
+│   ├── foxy-compat.zsh         # Foxy 兼容回退别名
+│   └── jazzy-compat.zsh        # Jazzy+ 新特性别名
 ├── functions/                   # 函数模块
 │   ├── workspace.zsh           # rsource, rcd, rbuild
 │   └── helpers.zsh             # rte, rthz, rrun, rbag, rbagplay, rkill
@@ -91,7 +97,8 @@ ros2/
 ├── tests/                       # 测试套件
 │   ├── test_load.zsh
 │   ├── test_aliases.zsh
-│   └── test_functions.zsh
+│   ├── test_functions.zsh
+│   └── test_foxy_compat.zsh
 ├── examples/                    # 使用示例
 ├── .github/workflows/ci.yml     # GitHub Actions CI
 ├── CHANGELOG.md

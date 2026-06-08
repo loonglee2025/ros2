@@ -13,3 +13,9 @@ alias rsi='ros2 service info'                  # Service info (needs arg)
 alias rst='ros2 service type'                  # Service type (needs arg)
 alias rsfind='ros2 service find'               # Find services by type
 alias rsc='ros2 service call'                  # Call service (needs args)
+
+# Jazzy+: service echo (service introspection)
+if _ros2_distro_at_least "jazzy" 2>/dev/null; then
+  alias rse='ros2 service echo'                # Echo service traffic
+  alias rsef='ros2 service echo --flow-style'  # Echo with flow-style output
+fi
